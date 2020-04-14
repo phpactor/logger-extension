@@ -28,7 +28,17 @@
             "Phpactor\\Extension\\Logger\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "integrate": [
+            "./vendor/bin/phpunit",
+            "./vendor/bin/phpstan analyze",
+            "./vendor/bin/php-cs-fixer fix"
+        ]
+    },
     "extra": {
-        "phpactor.extension_class": "Phpactor\\Extension\\Logger\\LoggingExtension"
+        "phpactor.extension_class": "Phpactor\\Extension\\Logger\\LoggingExtension",
+        "branch-alias": {
+            "dev-master": "0.3.x-dev"
+        }
     }
 }

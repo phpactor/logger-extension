@@ -2,9 +2,12 @@
 
 namespace Phpactor\Extension\Logger;
 
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Phpactor\Extension\Logger\Formatter\FormatterRegistry;
+use Phpactor\Extension\Logger\Formatter\PrettyFormatter;
 use Psr\Log\LogLevel;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FingersCrossedHandler;
@@ -41,19 +44,25 @@ class LoggingExtension implements Extension
 
     public function load(ContainerBuilder $container)
     {
+        $this->registerInfrastructure($container);
+        $this->registerFormatters($container);
+    }
+
+    private function registerInfrastructure(ContainerBuilder $container)
+    {
         $container->register(self::SERVICE_LOGGER, function (Container $container) {
             $logger = new Logger('phpactor');
-
+        
             if (false === $container->getParameter(self::PARAM_ENABLED)) {
                 $logger->pushHandler(new NullHandler());
                 return $logger;
             }
-
+        
             $handler = new StreamHandler(
                 $container->getParameter(self::PARAM_PATH),
                 $container->getParameter(self::PARAM_LEVEL)
             );
-
+        
             if ($formatter = $container->getParameter(self::PARAM_FORMATTER)) {
                 $handler->setFormatter(
                     $container->get(
@@ -61,17 +70,17 @@ class LoggingExtension implements Extension
                     )->get($formatter)
                 );
             }
-
+        
             if ($container->getParameter(self::PARAM_FINGERS_CROSSED)) {
                 $handler = new FingersCrossedHandler($handler);
             }
-
+        
             $logger->pushHandler($handler);
-
-
+        
+        
             return $logger;
         });
-
+        
         $container->register(self::SERVICE_FORMATTER_REGISTRY, function (Container $container) {
             $serviceMap = [];
             foreach ($container->getServiceIdsForTag(self::TAG_FORMATTER) as $serviceId => $attrs) {
@@ -83,8 +92,33 @@ class LoggingExtension implements Extension
                 }
                 $serviceMap[$attrs['alias']] = $serviceId;
             }
-
+        
             return new FormatterRegistry($container, $serviceMap);
         });
+    }
+
+    private function registerFormatters(ContainerBuilder $container): void
+    {
+        $container->register(PrettyFormatter::class, function () {
+            return new PrettyFormatter();
+        }, [
+            LoggingExtension::TAG_FORMATTER => [
+                'alias' => 'pretty',
+            ],
+        ]);
+        $container->register(LineFormatter::class, function () {
+            return new LineFormatter();
+        }, [
+            LoggingExtension::TAG_FORMATTER => [
+                'alias' => 'line',
+            ],
+        ]);
+        $container->register(JsonFormatter::class, function () {
+            return new JsonFormatter();
+        }, [
+            LoggingExtension::TAG_FORMATTER => [
+                'alias' => 'json',
+            ],
+        ]);
     }
 }

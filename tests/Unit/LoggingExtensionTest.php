@@ -29,7 +29,10 @@ class LoggingExtensionTest extends TestCase
         $this->assertInstanceOf(NullHandler::class, $handlers[0]);
     }
 
-    public function testLoggingEnabled()
+    /**
+     * @dataProvider provideLoggingFormatters
+     */
+    public function testLoggingFormatters(string $formatter)
     {
         $container = $this->create([
             LoggingExtension::PARAM_ENABLED => true,
@@ -39,6 +42,19 @@ class LoggingExtensionTest extends TestCase
         $handlers = $logger->getHandlers();
         $this->assertCount(1, $handlers);
         $this->assertInstanceOf(StreamHandler::class, $handlers[0]);
+    }
+
+    public function provideLoggingFormatters()
+    {
+        yield [
+            'line'
+        ];
+        yield [
+            'json'
+        ];
+        yield [
+            'pretty'
+        ];
     }
 
     public function testFingersCrossed()
@@ -91,7 +107,7 @@ class ExampleExtension implements Extension
     {
         $container->register('json_formatter', function (Container $container) {
             return new JsonFormatter();
-        }, [ LoggingExtension::TAG_FORMATTER => ['alias'=> 'json']]);
+        }, [ LoggingExtension::TAG_FORMATTER => ['alias'=> 'json2']]);
     }
 
     /**
