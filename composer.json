@@ -1,8 +1,8 @@
 {
     "name": "phpactor/logging-extension",
+    "type": "phpactor-extension",
     "description": "PSR logging extension",
     "license": "MIT",
-    "type": "phpactor-extension",
     "authors": [
         {
             "name": "Daniel Leech",
@@ -14,9 +14,16 @@
         "phpactor/container": "^1.1"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.0",
+        "friendsofphp/php-cs-fixer": "^2.17",
         "phpstan/phpstan": "~0.12.0",
-        "phpunit/phpunit": "~7.0",
-        "friendsofphp/php-cs-fixer": "~2.15.0"
+        "phpunit/phpunit": "~7.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3.x-dev"
+        },
+        "phpactor.extension_class": "Phpactor\\Extension\\Logger\\LoggingExtension"
     },
     "autoload": {
         "psr-4": {
@@ -28,17 +35,13 @@
             "Phpactor\\Extension\\Logger\\Tests\\": "tests/"
         }
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "integrate": [
             "./vendor/bin/phpunit",
             "./vendor/bin/phpstan analyze",
             "./vendor/bin/php-cs-fixer fix"
         ]
-    },
-    "extra": {
-        "phpactor.extension_class": "Phpactor\\Extension\\Logger\\LoggingExtension",
-        "branch-alias": {
-            "dev-master": "0.3.x-dev"
-        }
     }
 }
