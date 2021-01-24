@@ -10,7 +10,7 @@ use RuntimeException;
 
 class FormatterRegistryTest extends TestCase
 {
-    public function testThrowsExceptionIfFormatterNotFound()
+    public function testThrowsExceptionIfFormatterNotFound(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find formatter');
@@ -22,7 +22,7 @@ class FormatterRegistryTest extends TestCase
         $registry->get('zed');
     }
 
-    public function testReturnsFormatter()
+    public function testReturnsFormatter(): void
     {
         $container = $this->prophesize(ContainerInterface::class);
         $formatter = $this->prophesize(FormatterInterface::class);
