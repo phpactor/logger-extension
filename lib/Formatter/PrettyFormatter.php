@@ -26,7 +26,7 @@ class PrettyFormatter implements FormatterInterface
     /**
      * {@inheritDoc}
      */
-    public function formatBatch(array $records)
+    public function formatBatch(array $records): void
     {
     }
 

@@ -17,7 +17,7 @@ use Phpactor\MapResolver\Resolver;
 
 class LoggingExtensionTest extends TestCase
 {
-    public function testLoggingDisabled()
+    public function testLoggingDisabled(): void
     {
         $container = $this->create([
             LoggingExtension::PARAM_ENABLED => false,
@@ -32,7 +32,7 @@ class LoggingExtensionTest extends TestCase
     /**
      * @dataProvider provideLoggingFormatters
      */
-    public function testLoggingFormatters(string $formatter)
+    public function testLoggingFormatters(string $formatter): void
     {
         $container = $this->create([
             LoggingExtension::PARAM_ENABLED => true,
@@ -57,7 +57,7 @@ class LoggingExtensionTest extends TestCase
         ];
     }
 
-    public function testFingersCrossed()
+    public function testFingersCrossed(): void
     {
         $container = $this->create([
             LoggingExtension::PARAM_ENABLED => true,
@@ -70,7 +70,7 @@ class LoggingExtensionTest extends TestCase
         $this->assertInstanceOf(FingersCrossedHandler::class, $handlers[0]);
     }
 
-    public function testCustomFormatter()
+    public function testCustomFormatter(): void
     {
         $fname = tempnam(sys_get_temp_dir(), 'phpactor_test');
         $container = $this->create([
@@ -103,7 +103,7 @@ class ExampleExtension implements Extension
     /**
      * {@inheritDoc}
      */
-    public function load(ContainerBuilder $container)
+    public function load(ContainerBuilder $container): void
     {
         $container->register('json_formatter', function (Container $container) {
             return new JsonFormatter();
@@ -113,7 +113,7 @@ class ExampleExtension implements Extension
     /**
      * {@inheritDoc}
      */
-    public function configure(Resolver $schema)
+    public function configure(Resolver $schema): void
     {
     }
 }

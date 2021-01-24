@@ -11,7 +11,7 @@ class PrettyFormatterTest extends TestCase
     /**
      * @dataProvider provideFormat
      */
-    public function testFormat(array $record)
+    public function testFormat(array $record): void
     {
         $record = array_merge([
             'level_name' => 'info',

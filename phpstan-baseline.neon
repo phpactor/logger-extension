@@ -20,8 +20,3 @@ parameters:
 			count: 1
 			path: lib/Formatter/PrettyFormatter.php
 
-		-
-			message: "#^Method Phpactor\\\\Extension\\\\Logger\\\\LoggingExtension\\:\\:registerInfrastructure\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/LoggingExtension.php
-

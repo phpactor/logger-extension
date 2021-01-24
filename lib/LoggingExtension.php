@@ -30,7 +30,7 @@ class LoggingExtension implements Extension
 
     private const SERVICE_FORMATTER_REGISTRY = 'logging.formatter_registry';
 
-    public function configure(Resolver $schema)
+    public function configure(Resolver $schema): void
     {
         $schema->setDefaults([
             self::PARAM_ENABLED => false,
@@ -42,13 +42,13 @@ class LoggingExtension implements Extension
         ]);
     }
 
-    public function load(ContainerBuilder $container)
+    public function load(ContainerBuilder $container): void
     {
         $this->registerInfrastructure($container);
         $this->registerFormatters($container);
     }
 
-    private function registerInfrastructure(ContainerBuilder $container)
+    private function registerInfrastructure(ContainerBuilder $container): void
     {
         $container->register(self::SERVICE_LOGGER, function (Container $container) {
             $logger = new Logger('phpactor');
